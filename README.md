@@ -7,6 +7,10 @@
             <?php 
             // Instantiate an object MatCompiler
             $compiler = new MatCompiler();
+            // Set the default primary color
+            $compiler->setPrimaryColor("blue","lighten-1",true);
+            // Set the default secondary color
+            $compiler->setSecondaryColor("blue","lighten-1",true);
             // Call compileScss($directory)
             //      $directory = Directory where is going to be saved materialize.css
             $compiler->compileScss(__DIR__."/css/");
@@ -15,6 +19,43 @@
     </html>
 
 ## Customization
+#### Setting colors
+
+    /**
+    * Tries setting the primary color
+    * @param string $color Color to set
+    * @param string $tone Tone to set   
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    * @return boolean Indicates if it is valid
+    */
+    void setPrimaryColor($color,$tone,$updateFile = false)
+    
+    /**
+    * Tries setting the secondary color
+    * @param string $color Color to set
+    * @param string $tone Tone to set   
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    * @return boolean Indicates if it is valid
+    */
+    void setSecondaryColor($color,$tone,$updateFile = false)
+    
+    /**
+    * Tries setting the success color
+    * @param string $color Color to set
+    * @param string $tone Tone to set   
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    * @return boolean Indicates if it is valid
+    */
+    void setSuccessColor($color,$tone,$updateFile = false)
+    
+    /**
+    * Tries setting the error color
+    * @param string $color Color to set
+    * @param string $tone Tone to set   
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    * @return boolean Indicates if it is valid
+    */
+    void setErrorColor($color,$tone,$updateFile = false)
 #### Compiling
 Given the following SCSS:
     
