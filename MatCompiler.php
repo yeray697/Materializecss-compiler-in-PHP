@@ -13,9 +13,71 @@ class MatCompiler{
     private $linkColor2;
     
     /**
-    * Compile materialize.scss into the directory passed, with the name "materialize.css"
+    * Compile materialize.scss into $directory/materialize.css with the format as shown below:
+    *
+    * /*! Comment */
+    /*
+    * .navigation ul { line-height:20px; color:blue; }
+    * 
+    * .navigation ul a { color:red; }
+    * 
+    * .footer .copyright { color:silver; }
     */
-    function compileScss($directory){
+    function compileScss($directory) {
+        $this->compile($directory,"Leafo\ScssPhp\Formatter\Expanded");
+    }
+
+    /**
+    * Compile materialize.scss into $directory/materialize.css, with the same format as compileScss(), but it is tabulated if is an inner class: 
+    *
+    *  /*! Comment */
+    /*
+    * .navigation ul {
+    *   line-height: 20px;
+    *   color: blue; }
+    *     .navigation ul a {
+    *       color: red; }
+    * 
+    * .footer .copyright {
+    *   color: silver; }
+    */
+    function compileScssNested($directory){
+        $this->compile($directory,"Leafo\ScssPhp\Formatter\Nested");
+    }
+
+    /**
+    * Compile materialize.scss into $directory/materialize.css, and it every style is shown in a line:
+    *
+    *    /*! Comment */
+    /*
+    * .navigation ul { line-height:20px; color:blue; }
+    *
+    *.navigation ul a { color:red; }
+    *
+    *.footer .copyright { color:silver; }
+    */
+    function compileScssCompact($directory) {
+        $this->compile($directory,"Leafo\ScssPhp\Formatter\Compact");
+    }
+
+    /**
+    * Compile materialize.scss into $directory/materialize.css, and the css is compressed (it KEEPS comments)
+    */
+    function compileScssCompressed($directory) {
+        $this->compile($directory,"Leafo\ScssPhp\Formatter\Compressed");
+    }
+
+    /**
+    * Compile materialize.scss into $directory/materialize.css, and the css is compressed (it does NOT KEEP comments)
+    */
+    function compileScssCrunched($directory) {
+        $this->compile($directory,"Leafo\ScssPhp\Formatter\Crunched");
+    }
+
+    /**
+    * Compile materialize.scss into $directory/materialize.css, with the format passed
+    */
+    private function compile($directory,$format){
         if(isset($directory)) {
             if(substr($directory, -1)!="/"){
                 $directory = $directory + "/";
@@ -25,7 +87,7 @@ class MatCompiler{
 
             $scssCompiler = new Compiler();
             $scssCompiler->setImportPaths(MATERIALIZE_PATH."/sass");
-
+            $scssCompiler->setFormatter($format);
             $cssFile = fopen($directory.$cssFileName, "w") or die("Unable to open file '".$directory.$cssFileName."'");
             $scssConverted = $scssCompiler->compile('@import "'.$materializeSass.'";');
             echo $scssConverted;
@@ -34,10 +96,13 @@ class MatCompiler{
         } else {
             throw new Exception('compileScss($directory) needs a non null string.
              If you want to use current folder send \'./\'', 1);
-            
         }
     }
 
+    /**
+    * Override _variables.scss with your set colors
+    * It does not compile css
+    */
     function setMaterializeVariables(){
 
         $this->primaryColor1 = (isset($this->primaryColor1))?$this->primaryColor1:"materialize-red";
