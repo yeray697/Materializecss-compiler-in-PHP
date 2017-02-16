@@ -1,6 +1,10 @@
 <?php
 DEFINE("MATCOMPILER_PATH",__DIR__);
 DEFINE("SCSSPHP_PATH",MATCOMPILER_PATH."/scssphp");
+DEFINE("EXCEPTIONS_PATH",MATCOMPILER_PATH."/Exceptions");
 DEFINE("MATERIALIZE_PATH",MATCOMPILER_PATH."/materializecss_sass");
 require_once(SCSSPHP_PATH."/scss.inc.php");
+require_once(EXCEPTIONS_PATH."/DirectoryNullException.php");
+require_once(EXCEPTIONS_PATH."/InvalidColorException.php");
+require_once(EXCEPTIONS_PATH."/InvalidToneException.php");
 ?>

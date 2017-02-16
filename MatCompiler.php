@@ -1,8 +1,13 @@
 <?php
 require_once("config.php");
 use Leafo\ScssPhp\Compiler;
+/**
+* Class that manages materialize.scss
+* @author yeray697
+*/
 class MatCompiler{
-    //private $cssDirectoryName = MATCOMPILER_PATH . '/..';
+
+    //Variables
     private $primaryColor1;
     private $primaryColor2;
     private $secondaryColor1;
@@ -12,70 +17,259 @@ class MatCompiler{
     private $linkColor1;
     private $linkColor2;
     
+    //Methods
+
     /**
-    * Compile materialize.scss into $directory/materialize.css with the format as shown below:
+    * Check if a color is valid
     *
-    * /*! Comment */
-    /*
-    * .navigation ul { line-height:20px; color:blue; }
-    * 
-    * .navigation ul a { color:red; }
-    * 
-    * .footer .copyright { color:silver; }
+    * @param string $color Color to check if is valid
+    *
+    * @return boolean Indicates if it is valid
+    *
+    * @throws InvalidColorException if color is not valid
+    */
+    private function isValidColor($color){
+        $validColors = array(
+            0 => "red",
+            1 => "pink",
+            2 => "purple",
+            3 => "deep-purple",
+            4 => "indigo",
+            5 => "blue",
+            6 => "light-blue", 
+            7 => "cyan",
+            8 => "teal",
+            9 => "green", 
+            10 => "light-green",
+            11 => "lime",
+            12 => "yellow", 
+            13 => "amber",
+            14 => "orange",
+            15 => "deep-orange", 
+            16 => "brown",
+            17 => "grey",
+            18 => "blue-grey");
+        if (in_array($color, $validColors))
+            return true;
+        throw new InvalidColorException($color." color is not valid", 1);
+    }
+
+    /**
+    * Check if a tone is valid
+    *
+    * @param string $tone Tone to check if is valid
+    *
+    * @param string $color Color to check if tone is valid (grey and brown can not have accent tone)    
+    *
+    * @return boolean Indicates if it is valid
+    *
+    * @throws InvalidToneException if tone is not valid
+    */
+    private function isValidTone($tone,$color){
+        $validTones = array(
+            0 => "lighten-5",
+            1 => "lighten-4",
+            2 => "lighten-3",
+            3 => "lighten-2",
+            4 => "lighten-1",
+            5 => "base",
+            6 => "darken-1", 
+            7 => "darken-2",
+            8 => "darken-3",
+            9 => "darken-4");
+        $accentTones = array(
+            10 => "accent-1",
+            11 => "accent-2",
+            12 => "accent-3", 
+            13 => "accent-4");
+            
+        $result = in_array($tone,$accentTones);
+        if($color == "brown" || $color == "grey") {
+            if ($result){
+                throw new InvalidToneException($color." color can not have accent color", 2);
+            } else {
+                $result = in_array($tone,$validTones) || in_array($tone,$accentTones);
+            }
+        }
+        else {
+            $result = $result?true:in_array($tone,$validTones);
+        }
+        if (!$result) //The tone does not exist
+            throw new InvalidToneException($tone." is not a valid tone", 1);
+        return $result;
+    }
+
+    /**
+    * Tries setting the primary color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return boolean Indicates if it is valid
+    */
+    function setPrimaryColor($color,$tone,$updateFile = false){
+        if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
+            $this->primaryColor1 = $color;
+            $this->primaryColor2 = $tone;
+            if ($updateFile) {
+                $this->setMaterializeVariables();
+            }
+        }
+    }
+
+
+    /**
+    * Tries setting the secondary color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return boolean Indicates if it is valid
+    */
+    function setSecondaryColor($color,$tone,$updateFile = false){
+        if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
+            $this->secondaryColor1 = $color;
+            $this->secondaryColor2 = $tone;
+            if ($updateFile) {
+                $this->setMaterializeVariables();
+            }
+        }
+    }
+
+
+    /**
+    * Tries setting the success color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return boolean Indicates if it is valid
+    */
+    function setSuccessColor($color,$tone,$updateFile = false){
+        if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
+            $this->successColor1 = $color;
+            $this->successColor2 = $tone;
+            if ($updateFile) {
+                $this->setMaterializeVariables();
+            }
+        }
+    }
+
+
+    /**
+    * Tries setting the error color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return boolean Indicates if it is valid
+    */
+    function setErrorColor($color,$tone,$updateFile = false){
+        if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
+            $this->errorColor1 = $color;
+            $this->errorColor2 = $tone;
+            if ($updateFile) {
+                $this->setMaterializeVariables();
+            }
+        }
+    }
+
+    /**
+    * Set the links color
+    *
+    * @param string $directory Directory where materialize.css is going to be compiled
+    *
+    * @return void
+    */
+    function setLinkColor($color,$tone,$updateFile = false){
+        if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
+            $this->linkColor1 = $color;
+            $this->linkColor2 = $tone;
+            if ($updateFile) {
+                $this->setMaterializeVariables();
+            }
+        }
+    }
+
+    
+
+    /**
+    * Compile materialize.scss into $directory/materialize.css
+    *
+    * @param string $directory Directory where materialize.css is going to be compiled
+    *
+    * @return void
     */
     function compileScss($directory) {
-        $this->compile($directory,"Leafo\ScssPhp\Formatter\Expanded");
+        $this->compile($directory,"Expanded");
     }
 
     /**
-    * Compile materialize.scss into $directory/materialize.css, with the same format as compileScss(), but it is tabulated if is an inner class: 
+    * Compile materialize.scss into $directory/materialize.css, with the same format as compileScss(), but it is tabulated if is an inner class
     *
-    *  /*! Comment */
-    /*
-    * .navigation ul {
-    *   line-height: 20px;
-    *   color: blue; }
-    *     .navigation ul a {
-    *       color: red; }
-    * 
-    * .footer .copyright {
-    *   color: silver; }
+    * @param string $directory Directory where materialize.css is going to be compiled
+    *
+    * @return void
     */
     function compileScssNested($directory){
-        $this->compile($directory,"Leafo\ScssPhp\Formatter\Nested");
+        $this->compile($directory,"Nested");
     }
 
     /**
-    * Compile materialize.scss into $directory/materialize.css, and it every style is shown in a line:
+    * Compile materialize.scss into $directory/materialize.css, and it every style is shown in a line
     *
-    *    /*! Comment */
-    /*
-    * .navigation ul { line-height:20px; color:blue; }
+    * @param string $directory Directory where materialize.css is going to be compiled
     *
-    *.navigation ul a { color:red; }
-    *
-    *.footer .copyright { color:silver; }
+    * @return void
     */
     function compileScssCompact($directory) {
-        $this->compile($directory,"Leafo\ScssPhp\Formatter\Compact");
+        $this->compile($directory,"Compact");
     }
 
     /**
     * Compile materialize.scss into $directory/materialize.css, and the css is compressed (it KEEPS comments)
+    *
+    * @param string $directory Directory where materialize.css is going to be compiled
+    *
+    * @return void
     */
     function compileScssCompressed($directory) {
-        $this->compile($directory,"Leafo\ScssPhp\Formatter\Compressed");
+        $this->compile($directory,"Compressed");
     }
 
     /**
     * Compile materialize.scss into $directory/materialize.css, and the css is compressed (it does NOT KEEP comments)
+    *
+    * @param string $directory Directory where materialize.css is going to be compiled
+    *
+    * @return void
     */
     function compileScssCrunched($directory) {
-        $this->compile($directory,"Leafo\ScssPhp\Formatter\Crunched");
+        $this->compile($directory,"Crunched");
     }
 
     /**
     * Compile materialize.scss into $directory/materialize.css, with the format passed
+    *
+    * @param string $directory Directory where materialize.css is going to be compiled
+    *
+    * @param string $format Format to compile
+    *
+    * @return void
+    *
+    * @throws DirectoryNullException if directory is null
     */
     private function compile($directory,$format){
         if(isset($directory)) {
@@ -87,23 +281,24 @@ class MatCompiler{
 
             $scssCompiler = new Compiler();
             $scssCompiler->setImportPaths(MATERIALIZE_PATH."/sass");
-            $scssCompiler->setFormatter($format);
+            $scssCompiler->setFormatter("Leafo\ScssPhp\Formatter\\".$format);
             $cssFile = fopen($directory.$cssFileName, "w") or die("Unable to open file '".$directory.$cssFileName."'");
             $scssConverted = $scssCompiler->compile('@import "'.$materializeSass.'";');
             fwrite($cssFile, $scssConverted);
             fclose($cssFile);
         } else {
-            throw new Exception('compileScss($directory) needs a non null string.
-             If you want to use current folder send \'./\'', 1);
+            throw new DirectoryNullException('compileScss($directory) needs a non null string', 1);
         }
     }
 
     /**
     * Override _variables.scss with your set colors
     * It does not compile css
+    *
+    * @return void
     */
     function setMaterializeVariables(){
-
+        
         $this->primaryColor1 = (isset($this->primaryColor1))?$this->primaryColor1:"materialize-red";
         $this->primaryColor2 = (isset($this->primaryColor2))?$this->primaryColor2:"lighten-2";
         
