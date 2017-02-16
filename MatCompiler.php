@@ -90,7 +90,6 @@ class MatCompiler{
             $scssCompiler->setFormatter($format);
             $cssFile = fopen($directory.$cssFileName, "w") or die("Unable to open file '".$directory.$cssFileName."'");
             $scssConverted = $scssCompiler->compile('@import "'.$materializeSass.'";');
-            echo $scssConverted;
             fwrite($cssFile, $scssConverted);
             fclose($cssFile);
         } else {
