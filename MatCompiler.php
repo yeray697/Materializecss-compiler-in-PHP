@@ -94,7 +94,9 @@ class MatCompiler{
     /**
     * Compile materialize.scss into $directory/materialize.css
     *
-    * @param string $directory Directory where materialize.css is going to be compiled
+    * @param string $directory Directory where is going to be compiled
+    *
+    * @param string $cssFileName Name of the file (default = materialize.css)
     *
     * @return void
     */
@@ -105,7 +107,9 @@ class MatCompiler{
     /**
     * Compile materialize.scss into $directory/materialize.css, with the same format as compileScss(), but it is tabulated if is an inner class
     *
-    * @param string $directory Directory where materialize.css is going to be compiled
+    * @param string $directory Directory where is going to be compiled
+    *
+    * @param string $cssFileName Name of the file (default = materialize.css)
     *
     * @return void
     */
@@ -116,7 +120,9 @@ class MatCompiler{
     /**
     * Compile materialize.scss into $directory/materialize.css, and it every style is shown in a line
     *
-    * @param string $directory Directory where materialize.css is going to be compiled
+    * @param string $directory Directory where is going to be compiled
+    *
+    * @param string $cssFileName Name of the file (default = materialize.css)
     *
     * @return void
     */
@@ -127,29 +133,35 @@ class MatCompiler{
     /**
     * Compile materialize.scss into $directory/materialize.css, and the css is compressed (it KEEPS comments)
     *
-    * @param string $directory Directory where materialize.css is going to be compiled
+    * @param string $directory Directory where is going to be compiled
+    *
+    * @param string $cssFileName Name of the file (default = materialize.min.css)
     *
     * @return void
     */
-    function compileScssCompressed($directory, $cssFileName = "materialize.css") {
+    function compileScssCompressed($directory, $cssFileName = "materialize.min.css") {
         $this->compile($directory,$cssFileName,"Compressed");
     }
 
     /**
     * Compile materialize.scss into $directory/materialize.css, and the css is compressed (it does NOT KEEP comments)
     *
-    * @param string $directory Directory where materialize.css is going to be compiled
+    * @param string $directory Directory where is going to be compiled
+    *
+    * @param string $cssFileName Name of the file (default = materialize.min.css)
     *
     * @return void
     */
-    function compileScssCrunched($directory, $cssFileName = "materialize.css") {
+    function compileScssCrunched($directory, $cssFileName = "materialize.min.css") {
         $this->compile($directory,$cssFileName,"Crunched");
     }
 
     /**
     * Compile materialize.scss into $directory/materialize.css, with the format passed
     *
-    * @param string $directory Directory where materialize.css is going to be compiled
+    * @param string $directory Directory where is going to be compiled
+    *
+    * @param string $cssFileName Name of the file (default = materialize.css)
     *
     * @param string $format Format to compile
     *
