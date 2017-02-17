@@ -98,8 +98,8 @@ class MatCompiler{
     *
     * @return void
     */
-    function compileScss($directory) {
-        $this->compile($directory,"Expanded");
+    function compileScss($directory, $cssFileName = "materialize.css") {
+        $this->compile($directory,$cssFileName,"Expanded");
     }
 
     /**
@@ -109,8 +109,8 @@ class MatCompiler{
     *
     * @return void
     */
-    function compileScssNested($directory){
-        $this->compile($directory,"Nested");
+    function compileScssNested($directory, $cssFileName = "materialize.css"){
+        $this->compile($directory,$cssFileName,"Nested");
     }
 
     /**
@@ -120,8 +120,8 @@ class MatCompiler{
     *
     * @return void
     */
-    function compileScssCompact($directory) {
-        $this->compile($directory,"Compact");
+    function compileScssCompact($directory, $cssFileName = "materialize.css") {
+        $this->compile($directory,$cssFileName,"Compact");
     }
 
     /**
@@ -131,8 +131,8 @@ class MatCompiler{
     *
     * @return void
     */
-    function compileScssCompressed($directory) {
-        $this->compile($directory,"Compressed");
+    function compileScssCompressed($directory, $cssFileName = "materialize.css") {
+        $this->compile($directory,$cssFileName,"Compressed");
     }
 
     /**
@@ -142,8 +142,8 @@ class MatCompiler{
     *
     * @return void
     */
-    function compileScssCrunched($directory) {
-        $this->compile($directory,"Crunched");
+    function compileScssCrunched($directory, $cssFileName = "materialize.css") {
+        $this->compile($directory,$cssFileName,"Crunched");
     }
 
     /**
@@ -157,13 +157,13 @@ class MatCompiler{
     *
     * @throws DirectoryNullException if directory is null
     */
-    private function compile($directory,$format){
+    private function compile($directory,$cssFileName = "materialize.css",$format){
         if(isset($directory)) {
             if(substr($directory, -1)!="/"){
                 $directory = $directory + "/";
             }
+
             $materializeSass = "materialize.scss";
-            $cssFileName = "materialize.css";
 
             $scssCompiler = new Compiler();
             $scssCompiler->setImportPaths(MATERIALIZE_PATH."/sass");

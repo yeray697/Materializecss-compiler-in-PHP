@@ -11,7 +11,7 @@ class MakeSCSS {
     private $linkColor1;
     private $linkColor2;
 
-    
+
     
 
 
@@ -206,7 +206,6 @@ class MakeSCSS {
     * @return void
     */
     function setMaterializeVariables(){
-        
         $this->primaryColor1 = (isset($this->primaryColor1))?$this->primaryColor1:"materialize-red";
         $this->primaryColor2 = (isset($this->primaryColor2))?$this->primaryColor2:"lighten-2";
         
@@ -541,7 +540,7 @@ $collection-line-height: 1.5rem !default;
 
 $progress-bar-color: $secondary-color !default;';
         $cssFile = fopen($sassVariablesRoot, "w") or die("Unable to open file!");
-        fwrite($cssFile, $colors);
+        fwrite($cssFile, $file);
         fclose($cssFile);
     }
 }
