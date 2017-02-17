@@ -7,4 +7,5 @@ require_once(SCSSPHP_PATH."/scss.inc.php");
 require_once(EXCEPTIONS_PATH."/DirectoryNullException.php");
 require_once(EXCEPTIONS_PATH."/InvalidColorException.php");
 require_once(EXCEPTIONS_PATH."/InvalidToneException.php");
+require_once(MATCOMPILER_PATH."/MakeSCSS.php");
 ?>
