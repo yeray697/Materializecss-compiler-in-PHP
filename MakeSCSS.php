@@ -11,7 +11,10 @@ class MakeSCSS {
     private $linkColor1;
     private $linkColor2;
 
-
+    private $cardLinkColor1;
+    private $cardLinkColor2;
+    private $sliderButtonColor1;
+    private $sliderButtonColor2;
     
 
 
@@ -104,7 +107,7 @@ class MakeSCSS {
     *
     * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
-    * @return boolean Indicates if it is valid
+    * @return void
     */
     function setPrimaryColor($color,$tone,$updateFile = false){
         if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
@@ -126,7 +129,7 @@ class MakeSCSS {
     *
     * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
-    * @return boolean Indicates if it is valid
+    * @return void
     */
     function setSecondaryColor($color,$tone,$updateFile = false){
         if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
@@ -148,7 +151,7 @@ class MakeSCSS {
     *
     * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
-    * @return boolean Indicates if it is valid
+    * @return void
     */
     function setSuccessColor($color,$tone,$updateFile = false){
         if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
@@ -170,7 +173,7 @@ class MakeSCSS {
     *
     * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
-    * @return boolean Indicates if it is valid
+    * @return void
     */
     function setErrorColor($color,$tone,$updateFile = false){
         if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
@@ -185,7 +188,11 @@ class MakeSCSS {
     /**
     * Set the links color
     *
-    * @param string $directory Directory where materialize.css is going to be compiled
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
     * @return void
     */
@@ -193,6 +200,48 @@ class MakeSCSS {
         if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
             $this->linkColor1 = $color;
             $this->linkColor2 = $tone;
+            if ($updateFile) {
+                $this->setMaterializeVariables();
+            }
+        }
+    }
+
+    /**
+    * Set the card links color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return void
+    */
+    function setCardLinkColor($color,$tone,$updateFile = false){
+        if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
+            $this->cardLinkColor1 = $color;
+            $this->cardLinkColor2 = $tone;
+            if ($updateFile) {
+                $this->setMaterializeVariables();
+            }
+        }
+    }
+
+    /**
+    * Set the slider button color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return void
+    */
+    function setSliderButtonColor($color,$tone,$updateFile = false){
+        if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
+            $this->sliderButtonColor1 = $color;
+            $this->sliderButtonColor2 = $tone;
             if ($updateFile) {
                 $this->setMaterializeVariables();
             }
@@ -212,7 +261,7 @@ class MakeSCSS {
         $this->secondaryColor1 = (isset($this->secondaryColor1))?$this->secondaryColor1:"teal";
         $this->secondaryColor2 = (isset($this->secondaryColor2))?$this->secondaryColor2:"lighten-1";
         
-        $this->successColor1 = (isset($sthis->uccessColor1))?$this->successColor1:"green";
+        $this->successColor1 = (isset($this->successColor1))?$this->successColor1:"green";
         $this->successColor2 = (isset($this->successColor2))?$this->successColor2:"base";
         
         $this->errorColor1 = (isset($this->errorColor1))?$this->errorColor1:"red";
@@ -220,6 +269,13 @@ class MakeSCSS {
         
         $this->linkColor1 = (isset($this->linkColor1))?$this->linkColor1:"light-blue";
         $this->linkColor2 = (isset($this->linkColor2))?$this->linkColor2:"darken-1";
+        
+        $this->cardLinkColor1 = (isset($this->cardLinkColor1))?$this->cardLinkColor1:"orange";
+        $this->cardLinkColor2 = (isset($this->cardLinkColor2))?$this->cardLinkColor2:"accent-2";
+        
+        $this->sliderButtonColor1 = (isset($this->sliderButtonColor1))?$this->sliderButtonColor1:"green";
+        $this->sliderButtonColor2 = (isset($this->sliderButtonColor2))?$this->sliderButtonColor2:"base";
+
         $sassVariablesRoot = MATERIALIZE_PATH."/sass/components/_variables.scss";
         
         $file = '// ==========================================================================
@@ -314,7 +370,7 @@ $button-floating-radius: 50% !default;
 
 $card-padding: 24px !default;
 $card-bg-color: #fff !default;
-$card-link-color: color("orange", "accent-2") !default;
+$card-link-color: color("'.$this->cardLinkColor1.'", '.$this->cardLinkColor2.'") !default;
 $card-link-color-light: lighten($card-link-color, 20%) !default;
 
 
@@ -464,7 +520,7 @@ $sidenav-line-height: $sidenav-item-height !default;
 
 $slider-bg-color: color("grey", "base") !default;
 $slider-bg-color-light: color("grey", "lighten-2") !default;
-$slider-indicator-color: color("green", "base") !default;
+$slider-indicator-color: color("'.$this->sliderButtonColor1.'", "'.$this->sliderButtonColor2.") !default;
 
 
 // 16. Spinners | Loaders

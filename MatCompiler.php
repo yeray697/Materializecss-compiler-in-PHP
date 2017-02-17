@@ -24,7 +24,7 @@ class MatCompiler{
     *
     * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
-    * @return boolean Indicates if it is valid
+    * @return void
     */
     function setPrimaryColor($color,$tone,$updateFile = false){
         $this->makeSCSS->setPrimaryColor($color,$tone,$updateFile);
@@ -40,7 +40,7 @@ class MatCompiler{
     *
     * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
-    * @return boolean Indicates if it is valid
+    * @return void
     */
     function setSecondaryColor($color,$tone,$updateFile = false){
         $this->makeSCSS->setSecondaryColor($color,$tone,$updateFile);
@@ -56,7 +56,7 @@ class MatCompiler{
     *
     * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
-    * @return boolean Indicates if it is valid
+    * @return void
     */
     function setSuccessColor($color,$tone,$updateFile = false){
         $this->makeSCSS->setSuccessColor($color,$tone,$updateFile);
@@ -72,7 +72,7 @@ class MatCompiler{
     *
     * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
-    * @return boolean Indicates if it is valid
+    * @return void
     */
     function setErrorColor($color,$tone,$updateFile = false){
         $this->makeSCSS->setErrorColor($color,$tone,$updateFile);
@@ -81,7 +81,11 @@ class MatCompiler{
     /**
     * Set the links color
     *
-    * @param string $directory Directory where materialize.css is going to be compiled
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
     *
     * @return void
     */
@@ -89,6 +93,35 @@ class MatCompiler{
         $this->makeSCSS->setLinkColor($color,$tone,$updateFile);
     }
 
+    /**
+    * Set the card links color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return void
+    */
+    function setCardLinkColor($color,$tone,$updateFile = false){
+        $this->makeSCSS->setCardLinkColor($color,$tone,$updateFile);
+    }
+
+    /**
+    * Set the slider button color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return void
+    */
+    function setSliderButtonColor($color,$tone,$updateFile = false){
+        $this->makeSCSS->setSliderButtonColor($color,$tone,$updateFile);
+    }
     
 
     /**
