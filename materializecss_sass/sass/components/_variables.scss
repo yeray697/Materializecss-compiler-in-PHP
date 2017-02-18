@@ -35,10 +35,10 @@
 $primary-color: color("orange", "base") !default;
 $primary-color-light: lighten($primary-color, 15%) !default;
 $primary-color-dark: darken($primary-color, 15%) !default;
-$secondary-color: color("orange", "base") !default;
+$secondary-color: color("teal", "lighten-1") !default;
 $success-color: color("green", "base") !default;
-$error-color: color("orange", "base") !default;
-$link-color: color("orange", "base") !default;
+$error-color: color("red", "base") !default;
+$link-color: color("light-blue", "darken-1") !default;
 
 
 // 2. Badges
@@ -90,7 +90,7 @@ $button-floating-radius: 50% !default;
 
 $card-padding: 24px !default;
 $card-bg-color: #fff !default;
-$card-link-color: color("orange", "accent-2") !default;
+$card-link-color: color("blue", "base") !default;
 $card-link-color-light: lighten($card-link-color, 20%) !default;
 
 
@@ -221,7 +221,7 @@ $navbar-line-height: $navbar-height !default;
 $navbar-height-mobile: 56px !default;
 $navbar-line-height-mobile: $navbar-height-mobile !default;
 $navbar-font-size: 1rem !default;
-$navbar-font-color: #fff !default;
+$navbar-font-color: #000 !default;
 $navbar-brand-font-size: 2.1rem !default;
 
 // 14. Side Navigation
@@ -240,7 +240,7 @@ $sidenav-line-height: $sidenav-item-height !default;
 
 $slider-bg-color: color("grey", "base") !default;
 $slider-bg-color-light: color("grey", "lighten-2") !default;
-$slider-indicator-color: color("green", "base") !default;
+$slider-indicator-color: color("red", "base") !default;
 
 
 // 16. Spinners | Loaders

@@ -6,28 +6,43 @@ class MakeSCSS {
     private $primaryColor2;
     private $secondaryColor1;
     private $secondaryColor2;
+    private $successColor1;
+    private $successColor2;
     private $errorColor1;
     private $errorColor2;
     private $linkColor1;
     private $linkColor2;
-
     private $cardLinkColor1;
     private $cardLinkColor2;
     private $sliderButtonColor1;
     private $sliderButtonColor2;
     
+    private $navbarFontColor1;
+    private $navbarFontColor2;
 
 
+    private function getColor($color,$tone){
+        if ($color == "white"){
+            return "#fff";
+        } elseif ($color == "black") {
+            return "#000";
+        } elseif ($color == "transparent"){
+            return "transparent";
+        } else
+            return 'color("'.$color.'", "'.$tone.'")';
+    }
     /**
     * Check if a color is valid
     *
     * @param string $color Color to check if is valid
     *
+    * @param boolean $allowWAndB Indicate if white and black color are allowed (default = false)
+    *
     * @return boolean Indicates if it is valid
     *
     * @throws InvalidColorException if color is not valid
     */
-    private function isValidColor($color){
+    private function isValidColor($color,$allowWAndB = false){
         $validColors = array(
             0 => "red",
             1 => "pink",
@@ -48,7 +63,11 @@ class MakeSCSS {
             16 => "brown",
             17 => "grey",
             18 => "blue-grey");
-        if (in_array($color, $validColors))
+        $validColors2 = array(
+            0 => "white",
+            1 => "black",
+            2 => "transparent");
+        if (in_array($color, $validColors) || ($allowWAndB && in_array($color, $validColors2)))
             return true;
         throw new InvalidColorException($color." color is not valid", 1);
     }
@@ -60,11 +79,13 @@ class MakeSCSS {
     *
     * @param string $color Color to check if tone is valid (grey and brown can not have accent tone)    
     *
+    * @param boolean $allowWAndB Indicate if white and black color are allowed (default = false)    
+    *
     * @return boolean Indicates if it is valid
     *
     * @throws InvalidToneException if tone is not valid
     */
-    private function isValidTone($tone,$color){
+    private function isValidTone($tone,$color,$allowWAndB = false){
         $validTones = array(
             0 => "lighten-5",
             1 => "lighten-4",
@@ -81,17 +102,26 @@ class MakeSCSS {
             11 => "accent-2",
             12 => "accent-3", 
             13 => "accent-4");
+        $validColors1 = array(
+            0 => "brown",
+            1 => "grey");
+        $validColors2 = array(
+            0 => "white",
+            1 => "black",
+            2 => "transparent");
             
         $result = in_array($tone,$accentTones);
-        if($color == "brown" || $color == "grey") {
+        if(in_array($color,$validColors1)) {
             if ($result){
                 throw new InvalidToneException($color." color can not have accent color", 2);
             } else {
                 $result = in_array($tone,$validTones) || in_array($tone,$accentTones);
             }
+        } elseif (in_array($color,$validColors2)){
+            $result = true;
         }
         else {
-            $result = $result?true:in_array($tone,$validTones);
+            $result = $result?true:(in_array($tone,$validTones));
         }
         if (!$result) //The tone does not exist
             throw new InvalidToneException($tone." is not a valid tone", 1);
@@ -119,7 +149,6 @@ class MakeSCSS {
         }
     }
 
-
     /**
     * Tries setting the secondary color
     *
@@ -141,7 +170,6 @@ class MakeSCSS {
         }
     }
 
-
     /**
     * Tries setting the success color
     *
@@ -162,7 +190,6 @@ class MakeSCSS {
             }
         }
     }
-
 
     /**
     * Tries setting the error color
@@ -224,6 +251,7 @@ class MakeSCSS {
             if ($updateFile) {
                 $this->setMaterializeVariables();
             }
+            
         }
     }
 
@@ -242,6 +270,27 @@ class MakeSCSS {
         if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
             $this->sliderButtonColor1 = $color;
             $this->sliderButtonColor2 = $tone;
+            if ($updateFile) {
+                $this->setMaterializeVariables();
+            }
+        }
+    }
+
+    /**
+    * Set the navigation bar font color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return void
+    */
+    function setNavbarFontColor($color,$tone,$updateFile = false){
+        if($this->isValidColor($color,true) && $this->isValidTone($tone,$color,true)) {
+            $this->navbarFontColor1 = $color;
+            $this->navbarFontColor2 = $tone;
             if ($updateFile) {
                 $this->setMaterializeVariables();
             }
@@ -275,6 +324,9 @@ class MakeSCSS {
         
         $this->sliderButtonColor1 = (isset($this->sliderButtonColor1))?$this->sliderButtonColor1:"green";
         $this->sliderButtonColor2 = (isset($this->sliderButtonColor2))?$this->sliderButtonColor2:"base";
+        
+        $this->navbarFontColor1 = (isset($this->navbarFontColor1))?$this->navbarFontColor1:"white";
+        $this->navbarFontColor2 = ($this->navbarFontColor1 == "white" || $this->navbarFontColor1 == "black")?"":((isset($this->navbarFontColor2))?$this->navbarFontColor2:"base");
 
         $sassVariablesRoot = MATERIALIZE_PATH."/sass/components/_variables.scss";
         
@@ -370,7 +422,7 @@ $button-floating-radius: 50% !default;
 
 $card-padding: 24px !default;
 $card-bg-color: #fff !default;
-$card-link-color: color("'.$this->cardLinkColor1.'", '.$this->cardLinkColor2.'") !default;
+$card-link-color: color("'.$this->cardLinkColor1.'", "'.$this->cardLinkColor2.'") !default;
 $card-link-color-light: lighten($card-link-color, 20%) !default;
 
 
@@ -501,7 +553,7 @@ $navbar-line-height: $navbar-height !default;
 $navbar-height-mobile: 56px !default;
 $navbar-line-height-mobile: $navbar-height-mobile !default;
 $navbar-font-size: 1rem !default;
-$navbar-font-color: #fff !default;
+$navbar-font-color: '.$this->getColor($this->navbarFontColor1,$this->navbarFontColor2).' !default;
 $navbar-brand-font-size: 2.1rem !default;
 
 // 14. Side Navigation
@@ -520,7 +572,7 @@ $sidenav-line-height: $sidenav-item-height !default;
 
 $slider-bg-color: color("grey", "base") !default;
 $slider-bg-color-light: color("grey", "lighten-2") !default;
-$slider-indicator-color: color("'.$this->sliderButtonColor1.'", "'.$this->sliderButtonColor2.") !default;
+$slider-indicator-color: color("'.$this->sliderButtonColor1.'", "'.$this->sliderButtonColor2.'") !default;
 
 
 // 16. Spinners | Loaders

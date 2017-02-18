@@ -122,7 +122,21 @@ class MatCompiler{
     function setSliderButtonColor($color,$tone,$updateFile = false){
         $this->makeSCSS->setSliderButtonColor($color,$tone,$updateFile);
     }
-    
+
+    /**
+    * Set the navigation bar font color
+    *
+    * @param string $color Color to set
+    *
+    * @param string $tone Tone to set   
+    *
+    * @param boolean $updateFile Update _variables.scss after set the color (default = false)   
+    *
+    * @return void
+    */
+    function setNavbarFontColor($color,$tone,$updateFile = false){
+        $this->makeSCSS->setNavbarFontColor($color,$tone,$updateFile);
+    }
 
     /**
     * Compile materialize.scss into $directory/materialize.css
