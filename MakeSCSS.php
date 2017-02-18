@@ -36,13 +36,13 @@ class MakeSCSS {
     *
     * @param string $color Color to check if is valid
     *
-    * @param boolean $allowWAndB Indicate if white and black color are allowed (default = false)
+    * @param boolean $allowWAndB Indicate if white and black color are allowed (default = true)
     *
     * @return boolean Indicates if it is valid
     *
     * @throws InvalidColorException if color is not valid
     */
-    private function isValidColor($color,$allowWAndB = false){
+    private function isValidColor($color,$allowWAndB = true){
         $validColors = array(
             0 => "red",
             1 => "pink",
@@ -79,13 +79,13 @@ class MakeSCSS {
     *
     * @param string $color Color to check if tone is valid (grey and brown can not have accent tone)    
     *
-    * @param boolean $allowWAndB Indicate if white and black color are allowed (default = false)    
+    * @param boolean $allowWAndB Indicate if white and black color are allowed (default = true)    
     *
     * @return boolean Indicates if it is valid
     *
     * @throws InvalidToneException if tone is not valid
     */
-    private function isValidTone($tone,$color,$allowWAndB = false){
+    private function isValidTone($tone,$color,$allowWAndB = true){
         $validTones = array(
             0 => "lighten-5",
             1 => "lighten-4",
@@ -288,7 +288,7 @@ class MakeSCSS {
     * @return void
     */
     function setNavbarFontColor($color,$tone,$updateFile = false){
-        if($this->isValidColor($color,true) && $this->isValidTone($tone,$color,true)) {
+        if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
             $this->navbarFontColor1 = $color;
             $this->navbarFontColor2 = $tone;
             if ($updateFile) {
@@ -364,13 +364,13 @@ class MakeSCSS {
 // 1. Colors
 // ==========================================================================
 
-$primary-color: color("'.$this->primaryColor1.'", "'.$this->primaryColor2.'") !default;
+$primary-color: '.$this->getColor($this->primaryColor1,$this->primaryColor2).' !default;
 $primary-color-light: lighten($primary-color, 15%) !default;
 $primary-color-dark: darken($primary-color, 15%) !default;
-$secondary-color: color("'.$this->secondaryColor1.'", "'.$this->secondaryColor2.'") !default;
-$success-color: color("'.$this->successColor1.'", "'.$this->successColor2.'") !default;
-$error-color: color("'.$this->errorColor1.'", "'.$this->errorColor2.'") !default;
-$link-color: color("'.$this->linkColor1.'", "'.$this->linkColor2.'") !default;
+$secondary-color: '.$this->getColor($this->secondaryColor1,$this->secondaryColor2).' !default;
+$success-color: '.$this->getColor($this->successColor1,$this->successColor2).' !default;
+$error-color: '.$this->getColor($this->errorColor1,$this->errorColor2).' !default;
+$link-color: '.$this->getColor($this->linkColor1,$this->linkColor2).' !default;
 
 
 // 2. Badges
@@ -422,7 +422,7 @@ $button-floating-radius: 50% !default;
 
 $card-padding: 24px !default;
 $card-bg-color: #fff !default;
-$card-link-color: color("'.$this->cardLinkColor1.'", "'.$this->cardLinkColor2.'") !default;
+$card-link-color: '.$this->getColor($this->cardLinkColor1,$this->cardLinkColor2).' !default;
 $card-link-color-light: lighten($card-link-color, 20%) !default;
 
 
@@ -572,7 +572,7 @@ $sidenav-line-height: $sidenav-item-height !default;
 
 $slider-bg-color: color("grey", "base") !default;
 $slider-bg-color-light: color("grey", "lighten-2") !default;
-$slider-indicator-color: color("'.$this->sliderButtonColor1.'", "'.$this->sliderButtonColor2.'") !default;
+$slider-indicator-color: '.$this->getColor($this->sliderButtonColor1,$this->sliderButtonColor2).' !default;
 
 
 // 16. Spinners | Loaders
