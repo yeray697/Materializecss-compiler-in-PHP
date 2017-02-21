@@ -17,7 +17,7 @@ class MakeSCSS {
     private $sliderButtonColor1;
     private $sliderButtonColor2;
     
-    private $navbarFontColor1;
+    private $navFooterFontColor1;
     private $navbarFontColor2;
 
 
@@ -289,7 +289,7 @@ class MakeSCSS {
     */
     function setNavbarFontColor($color,$tone,$updateFile = false){
         if($this->isValidColor($color) && $this->isValidTone($tone,$color)) {
-            $this->navbarFontColor1 = $color;
+            $this->navFooterFontColor1 = $color;
             $this->navbarFontColor2 = $tone;
             if ($updateFile) {
                 $this->setMaterializeVariables();
@@ -325,8 +325,8 @@ class MakeSCSS {
         $this->sliderButtonColor1 = (isset($this->sliderButtonColor1))?$this->sliderButtonColor1:"green";
         $this->sliderButtonColor2 = (isset($this->sliderButtonColor2))?$this->sliderButtonColor2:"base";
         
-        $this->navbarFontColor1 = (isset($this->navbarFontColor1))?$this->navbarFontColor1:"white";
-        $this->navbarFontColor2 = ($this->navbarFontColor1 == "white" || $this->navbarFontColor1 == "black")?"":((isset($this->navbarFontColor2))?$this->navbarFontColor2:"base");
+        $this->navFooterFontColor1 = (isset($this->navFooterFontColor1))?$this->navFooterFontColor1:"white";
+        $this->navFooterFontColor2 = ($this->navFooterFontColor1 == "white" || $this->navFooterFontColor1 == "black")?"":((isset($this->navbarFontColor2))?$this->navbarFontColor2:"base");
 
         $sassVariablesRoot = MATERIALIZE_PATH."/sass/components/_variables.scss";
         
@@ -371,8 +371,10 @@ $secondary-color: '.$this->getColor($this->secondaryColor1,$this->secondaryColor
 $success-color: '.$this->getColor($this->successColor1,$this->successColor2).' !default;
 $error-color: '.$this->getColor($this->errorColor1,$this->errorColor2).' !default;
 $link-color: '.$this->getColor($this->linkColor1,$this->linkColor2).' !default;
-
-
+//COLORS ADDED BY MYSELF
+$nav-footer-font-color: '.$this->getColor($this->navFooterFontColor1,$this->navFooterFontColor2).' !default;
+$slider-button-color: '.$this->getColor($this->sliderButtonColor1,$this->sliderButtonColor2).' !default;
+$card-link-color: '.$this->getColor($this->cardLinkColor1,$this->cardLinkColor2).' !default;
 // 2. Badges
 // ==========================================================================
 
@@ -422,7 +424,7 @@ $button-floating-radius: 50% !default;
 
 $card-padding: 24px !default;
 $card-bg-color: #fff !default;
-$card-link-color: '.$this->getColor($this->cardLinkColor1,$this->cardLinkColor2).' !default;
+$card-link-color: $card-link-color !default;
 $card-link-color-light: lighten($card-link-color, 20%) !default;
 
 
@@ -553,7 +555,7 @@ $navbar-line-height: $navbar-height !default;
 $navbar-height-mobile: 56px !default;
 $navbar-line-height-mobile: $navbar-height-mobile !default;
 $navbar-font-size: 1rem !default;
-$navbar-font-color: '.$this->getColor($this->navbarFontColor1,$this->navbarFontColor2).' !default;
+$navbar-font-color: $nav-footer-font-color !default;
 $navbar-brand-font-size: 2.1rem !default;
 
 // 14. Side Navigation
@@ -572,7 +574,7 @@ $sidenav-line-height: $sidenav-item-height !default;
 
 $slider-bg-color: color("grey", "base") !default;
 $slider-bg-color-light: color("grey", "lighten-2") !default;
-$slider-indicator-color: '.$this->getColor($this->sliderButtonColor1,$this->sliderButtonColor2).' !default;
+$slider-indicator-color: $slider-button-color !default;
 
 
 // 16. Spinners | Loaders
